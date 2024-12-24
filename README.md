@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="./public/Captura%20de%20tela%202024-12-24%20143050.png" alt="ValcannLogo">
+  <img src="./public/icon.png" alt="ValcannLogo">
 </p>
 
 # **Valcann Programa de estágio** 
 
-# **Automação de Backups** 
+# **Problema 1 | Automação de Ambientes Operacionais** 
 
 Este projeto é um script em Python para automatizar tarefas de gerenciamento de backups. Ele realiza as seguintes ações:
 
@@ -171,9 +171,89 @@ if __name__ == "__main__":
 5. Salva os logs da pasta de destino em `backupsTo.log`.  
 6. Exibe mensagens indicando o progresso das operações.
 
+# **Problema 2 | Monitoramento e Performance**
 
+####  **Como cheguei a essa conclusão:**  
+Como possuo acesso à AWS Free Tier e já realizei alguns cursos relacionados à AWS, consegui aplicar essas ferramentas (como Amazon CloudWatch, RDS Performance Insights e VPC Flow Logs) com eficiência.  No momento, utilizo o final do meu Free Tier para verificar a questão financeira da minha conta. Dessa forma, acredito que essas ferramentas conseguiram diagnosticar e identificar as causas dos problemas de escalabilidade e lentidão, garantindo a otimização da infraestrutura e a resolução do problema de desempenho na aplicação. Considerando que a Valcann utiliza AWS, acredito que essas ferramentas seriam ideais para diagnosticar e corrigir o problema de performance, seguindo as melhores práticas de monitoramento e otimização da AWS.
+
+<p align="center">
+  <img src="./public/aws.png" alt="aws pratico">
+</p>
+
+####   **Causa \> Problema \> Solução:**
+
+* **Causa:**  
+  A aplicação está lenta para os usuários, mesmo sem sobrecarga nos servidores EC2 ou no banco de dados. Isso pode ser causado por **consultas lentas**, **problemas de replicação**, **latência de rede** ou **balanceamento de carga ineficiente**.  
+* **Problema:**  
+  A **replicação do banco de dados** pode não estar funcionando corretamente, causando gargalos nas leituras, ou **consultas ineficientes** podem estar sobrecarregando o banco de dados. Além disso, **latência de rede** entre a aplicação e o banco de dados ou um **desbalanceamento de carga** podem estar afetando o desempenho.  
+* **Solução:**  
+  * **RDS Performance Insights**: Usar essa ferramenta para identificar **consultas lentas** e gargalos de I/O no banco de dados, além de verificar a **replicação** (master-slave) para garantir que as leituras estão sendo distribuídas corretamente.  
+  * **CloudWatch**: Monitorar as **métricas de CPU, memória e I/O** das instâncias EC2 e do banco de dados. Configurar **CloudWatch Alarms** para alertar sobre qualquer anomalia de performance, como picos de utilização de CPU ou memória.  
+  * **VPC Flow Logs**: Monitorar a **latência de rede** entre as instâncias EC2 e o banco de dados. Analisar os logs de tráfego para identificar possíveis problemas de **congestionamento de rede** ou **latência**.  
+  * **Ajuste no ALB (Application Load Balancer)**: Verificar a distribuição de tráfego entre os servidores EC2 para garantir que a carga está equilibrada corretamente, sem sobrecarregar nenhum servidor.
+
+**Amazon CloudWatch:**
+
+* **Métricas de Recursos: Monitoramento das métricas de CPU, memória, disco e rede tanto para as instâncias EC2 quanto para o banco de dados RDS.**  
+* **CloudWatch Alarms: Configuração de alarmes para notificar em tempo real se algum recurso estiver com alto uso (ex: mais de 80% de CPU ou memória).**
+
+**RDS Performance Insights:**
+
+* **Análise de Consultas: Permite identificar consultas lentas, gargalos de I/O no banco de dados e outras métricas relacionadas à performance do RDS.**  
+* **Monitoramento de Replicação: Ajuda a identificar problemas na replicação entre o banco de dados master e replica, garantindo que as leituras não sobrecarreguem o banco de dados de escrita.**
+
+**VPC Flow Logs:**
+
+* **Latência de Rede: Monitoramento do tráfego de rede entre as instâncias EC2 e o banco de dados, ajudando a detectar congestionamentos de tráfego e latência de rede.**  
+* **Insights de Rede: Identifica problemas de rede que podem estar impactando a comunicação entre servidores de aplicação e banco de dados.**
+
+<p align="center">
+  <img src="./public/ClasseUML.png" alt="ValcannLogo">
+</p>
+
+# **Problema 3 | Aplicações e Desenvolvimento de Software**
+
+Como exemplo, vou utilizar um projeto pessoal no qual implementei uma infraestrutura automatizada para um sistema de cadastro na nuvem. Utilizei ferramentas focadas em DevOps, como CI/CD, Terraform para a criação de infraestrutura como código, e configurei o deploy de maneira automatizada. Caso houvesse um front-end, ele seria empacotado no pipeline CI/CD de forma similar.
+
+**Link do projeto: https://github.com/LucasCA-Git/CadastroDevOps**
+
+Este projeto tem como objetivo provisionar automaticamente a infraestrutura na AWS, utilizando Terraform para criar os recursos necessários e GitHub Actions para automação do deploy. A aplicação é hospedada em EC2 com Docker, com o banco de dados MySQL rodando em container. A orquestração de containers é feita pelo EKS (Elastic Kubernetes Service), e as imagens Docker são armazenadas no ECR (Elastic Container Registry).
+
+**Tecnologias Utilizadas:**
+
+* Terraform: Provisionamento da infraestrutura.  
+* AWS (EC2, EKS, ECR, IAM): Hospedagem da aplicação e gerenciamento de containers.  
+* Docker: Containerização da aplicação e banco de dados.  
+* GitHub Actions: Automação do deploy via pipeline CI/CD.
+
+**Passos de Configuração:**
+
+1. Terraform para provisionar recursos na AWS: VPC, EC2, EKS, ECR.  
+2. GitHub Actions para CI/CD: sempre que há alterações na branch main, a infraestrutura é provisionada ou atualizada automaticamente.
+
+**Infraestrutura da AWS:**
+
+* VPC: Rede privada com sub-redes para EC2 e EKS.  
+* EC2: Instância com Docker e MySQL em container.  
+* EKS: Gerencia containers e faz o deploy contínuo.  
+* ECR: Armazena imagens Docker.
+
+**Como rodar o Terraform:**
+
+1. Inicialize o Terraform: `terraform init`  
+2. Crie o plano de execução: `terraform plan`  
+3. Aplique a infraestrutura: `terraform apply -auto-approve`
+
+**Pipeline CI/CD com GitHub Actions:**
+
+* O pipeline é executado sempre que o código na branch main é alterado.  
+* Ele provisiona a infraestrutura e realiza o deploy automaticamente.  
+* A aplicação pode ser acessada via o Swagger, acessando o IP público da EC2
+
+<p align="center">
+  <img src="./public/ClasseUML3.png" alt="ValcannLogo">
+</p>
 
 ## **Licença**
 
 Este projeto está sob a licença MIT. Consulte o arquivo `LICENSE` para mais informações.
-
