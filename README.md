@@ -1,4 +1,6 @@
-![ValcannLogo](/public/Captura%20de%20tela%202024-12-24%20143050.png)
+<p align="center">
+  <img src="./public/Captura%20de%20tela%202024-12-24%20143050.png" alt="ValcannLogo">
+</p>
 
 # **Valcann Programa de estágio** 
 
