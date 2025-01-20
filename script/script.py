@@ -36,10 +36,10 @@ def processar_arquivos(pasta_origem, pasta_destino):
             caminho_arquivo = os.path.join(pasta_origem, nome_arquivo)
             if os.path.isfile(caminho_arquivo):
                 data_criacao = datetime.fromtimestamp(os.stat(caminho_arquivo).st_ctime)
-                if data_criacao > data_limite:
+                if data_criacao < data_limite:  # Arquivos mais antigos que 3 dias
                     os.remove(caminho_arquivo)
                     print(f"Arquivo deletado: {nome_arquivo}")
-                else:
+                else:  # Arquivos mais novos ou com exatamente 3 dias
                     caminho_destino = os.path.join(pasta_destino, nome_arquivo)
                     shutil.copy2(caminho_arquivo, caminho_destino)
                     print(f"Arquivo copiado: {nome_arquivo} para {pasta_destino}")
